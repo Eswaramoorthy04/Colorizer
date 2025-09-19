@@ -3,69 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colourizer - AI Colorization Tool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chillax:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Image Colorizer</title>
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body style="background-image: url('{{ url_for('static', filename='images/bgimg.png') }}');">
+<body>
+    <div class="container">
+        <h1>Image Colorizer</h1>
 
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <header class="hero-image">
-        <div class="hero-text">
-            <h1>Colourizer</h1>
-            <p>AI-Powered Colorization Tool</p>
-            <a href="#demo" class="btn">Try It Now</a>
-        </div>
-    </header>
-    <section id="demo">
-        <h2>Try Our Colorization Model</h2>
-        <p>Upload your black-and-white image and see the magic!</p>
-        <form method="post" enctype="multipart/form-data">
+        <!-- Upload form -->
+        <form method="POST" enctype="multipart/form-data">
             <input type="file" name="file" accept="image/*" required>
-            <button type="submit" class="btn">Upload</button>
+            <button type="submit">Upload & Colorize</button>
         </form>
+
+        <!-- Show results -->
         {% if colorized_image %}
-        <div id="output">
-            <h2>Colorized Image</h2>
-            <img src="{{ url_for('static', filename='uploads/' + colorized_image) }}" alt="Colorized Image" style="max-width: 100%; height: auto;">
-            <br><br>
-            <a href="{{ url_for('download_file', filename=colorized_image) }}" class="btn" download>Download Image</a>
+        <div class="result">
+            <h2>Result:</h2>
+            <div class="images">
+                <div class="img-box">
+                    <h3>Original</h3>
+                    <img src="{{ url_for('static', filename='uploads/' + colorized_image.replace('colorized_', '')) }}" alt="Original Image">
+                </div>
+                <div class="img-box">
+                    <h3>Colorized</h3>
+                    <img src="{{ url_for('static', filename='uploads/' + colorized_image) }}" alt="Colorized Image">
+                </div>
+            </div>
+            <a class="download-btn" href="{{ url_for('download_file', filename=colorized_image) }}">Download Colorized Image</a>
         </div>
         {% endif %}
-    </section>
-    <section id="features">
-        <h2>Features</h2>
-        <div class="feature-item">
-            <h3>Fast Processing</h3>
-            <p>Our model processes images in seconds, providing instant results.</p>
-        </div>
-        <div class="feature-item">
-            <h3>High Quality</h3>
-            <p>Experience stunning, lifelike colors that bring your images to life.</p>
-        </div>
-        <div class="feature-item">
-            <h3>Easy to Use</h3>
-            <p>Just upload your image and let our AI do the rest!</p>
-        </div>
-    </section>
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Colourizer is a state-of-the-art tool that uses AI to add vibrant colors to black-and-white images. We leverage deep learning and convolutional neural networks to produce stunning, lifelike colorization results.</p>
-    </section>
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>If you have any questions, feel free to <a href="mailto:info@colourizer.com">email us</a>.</p>
-    </section>
-    <footer>
-        <p>&copy; 2024 Colourizer. All Rights Reserved.</p>
-    </footer>
+    </div>
+
+    <!-- Background -->
+    <img class="background" src="{{ url_for('static', filename='images/bgimg.png') }}" alt="Background">
+
+    <!-- JS -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
