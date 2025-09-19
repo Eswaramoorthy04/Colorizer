@@ -3,43 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Colorizer</title>
-    <!-- CSS -->
+    <title>Colourizer - AI Colorization Tool</title>
+
+    <!-- Google Font: Chillax -->
+    <link href="https://fonts.googleapis.com/css2?family=Chillax:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- use url_for so Render serves them correctly -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body>
-    <div class="container">
-        <h1>Image Colorizer</h1>
+<body style="background-image: url('{{ url_for('static', filename='images/bgimg.png') }}');">
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-        <!-- Upload form -->
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">Upload & Colorize</button>
+    <!-- Hero Section -->
+    <header class="hero-image">
+        <div class="hero-text">
+            <h1>Colourizer</h1>
+            <p>AI-Powered Colorization Tool</p>
+            <a href="#demo" class="btn">Try It Now</a>
+        </div>
+    </header>
+
+    <!-- Demo Section -->
+    <section id="demo">
+        <h2>Try Our Colorization Model</h2>
+        <p>Upload your black-and-white image and see the magic!</p>
+
+        <form method="post" enctype="multipart/form-data">
+            <!-- added id so client preview script works -->
+            <input id="fileInput" type="file" name="file" accept="image/*" required>
+            <!-- keep it a normal submit; script will preview before submit on click -->
+            <button id="uploadBtn" type="submit" class="btn">Upload</button>
         </form>
 
-        <!-- Show results -->
-        {% if colorized_image %}
-        <div class="result">
-            <h2>Result:</h2>
-            <div class="images">
-                <div class="img-box">
-                    <h3>Original</h3>
-                    <img src="{{ url_for('static', filename='uploads/' + colorized_image.replace('colorized_', '')) }}" alt="Original Image">
-                </div>
-                <div class="img-box">
-                    <h3>Colorized</h3>
-                    <img src="{{ url_for('static', filename='uploads/' + colorized_image) }}" alt="Colorized Image">
-                </div>
-            </div>
-            <a class="download-btn" href="{{ url_for('download_file', filename=colorized_image) }}">Download Colorized Image</a>
-        </div>
+        {% if error %}
+            <p style="color: #ffcccc;">{{ error }}</p>
         {% endif %}
-    </div>
 
-    <!-- Background -->
-    <img class="background" src="{{ url_for('static', filename='images/bgimg.png') }}" alt="Background">
+        {% if colorized_image %}
+        <div id="output">
+            <h2>Colorized Image</h2>
+            <img src="{{ url_for('static', filename='outputs/' + colorized_image) }}" alt="Colorized Image" style="max-width: 100%; height: auto;">
+            <br><br>
+            <a href="{{ url_for('download_file', filename=colorized_image) }}" class="btn" download>Download Image</a>
+        </div>
+        {% else %}
+        <!-- client-side preview area (before upload) -->
+        <div id="output"></div>
+        {% endif %}
+    </section>
 
-    <!-- JS -->
+    <!-- rest of your sections (features/about/contact/footer) unchanged -->
+    <section id="features">
+        <h2>Features</h2>
+        <div class="feature-item">
+            <h3>Fast Processing</h3>
+            <p>Our model processes images in seconds, providing instant results.</p>
+        </div>
+        <div class="feature-item">
+            <h3>High Quality</h3>
+            <p>Experience stunning, lifelike colors that bring your images to life.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Easy to Use</h3>
+            <p>Just upload your image and let our AI do the rest!</p>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Colourizer is a state-of-the-art tool that uses AI to add vibrant colors to black-and-white images. We leverage deep learning and convolutional neural networks to produce stunning, lifelike colorization results.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feel free to <a href="mailto:info@colourizer.com">email us</a>.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Colourizer. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JS: make sure your static/js/scripts.js exists and uses fileInput/uploadBtn ids -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
